@@ -1,5 +1,6 @@
 package com.anwesome.ui.horizontalcardlist;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Point;
 import android.hardware.display.DisplayManager;
@@ -8,6 +9,7 @@ import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.HorizontalScrollView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,9 +21,11 @@ public class LeanCardContainer extends ViewGroup{
     private int w,h;
     private List<LeanCard> leanCards = new ArrayList<>();
     private LeanMenuView leanMenuView;
+    private boolean calledExplicitly = false;
     public LeanCardContainer(Context context) {
         super(context);
         initDimensions(context);
+        calledExplicitly = true;
     }
     public LeanCardContainer(Context context, AttributeSet attrs) {
         super(context,attrs);
@@ -94,6 +98,14 @@ public class LeanCardContainer extends ViewGroup{
             }
         }
         return true;
+    }
+    public void show() {
+        if(calledExplicitly) {
+            Activity activity = (Activity)getContext();
+            HorizontalScrollView horizontalScrollView = new HorizontalScrollView(activity);
+            activity.addContentView(horizontalScrollView,new LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT));
+            horizontalScrollView.addView(this,new LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT));
+        }
     }
 
 }
