@@ -43,13 +43,24 @@ public class LeanCard {
         canvas.drawBitmap(bitmap,0,0,paint);
         paint.setColor(Color.parseColor("#212121"));
         paint.setTextSize(h/12);
-        canvas.drawText(title,w/10,2*h/3+h/10,paint);
+        drawTitle(canvas, paint);
         paint.setTextSize(h/18);
-        canvas.drawText(subtitle,w/10,4*h/5+h/17,paint);
+        canvas.drawText(subtitle,w/10,4*h/5+h/8,paint);
         if(leanMenus.size()>0) {
             menuButton.draw(canvas,paint);
         }
         time++;
+    }
+    public void drawTitle(Canvas canvas,Paint paint) {
+        String msg = "";
+        for(int i=0;i<title.length();i++) {
+            if(paint.measureText(msg) > w/2+w/20) {
+                msg+="...";
+                break;
+            }
+            msg = msg+title.charAt(i);
+        }
+        canvas.drawText(msg,w/10,2*h/3+h/5,paint);
     }
     public void setMenuDimensions() {
         int y = 0,hSize = h/4;
