@@ -42,10 +42,10 @@ public class LeanCard {
         canvas.drawRect(new RectF(0,0,w,h),paint);
         canvas.drawBitmap(bitmap,0,0,paint);
         paint.setColor(Color.parseColor("#212121"));
-        paint.setTextSize(h/8);
-        canvas.drawText(title,w/10,2*h/3+h/15,paint);
-        paint.setTextSize(h/16);
-        canvas.drawText(subtitle,w/10,4*h/5,paint);
+        paint.setTextSize(h/12);
+        canvas.drawText(title,w/10,2*h/3+h/10,paint);
+        paint.setTextSize(h/18);
+        canvas.drawText(subtitle,w/10,4*h/5+h/17,paint);
         if(leanMenus.size()>0) {
             menuButton.draw(canvas,paint);
         }
@@ -80,12 +80,12 @@ public class LeanCard {
             for(int i=0;i<3;i++) {
                 canvas.save();
                 canvas.translate(x,y);
-                canvas.drawCircle(0,(i-1)*(5/2*r),r,paint);
+                canvas.drawCircle(0,(i-1)*(3*r),r,paint);
                 canvas.restore();
             }
         }
         public boolean handleTap(float x,float y) {
-            boolean condition = x>=this.x-2*r && x<=this.x+2*r && y>=this.y-4*r && y<=this.y+4*r;
+            boolean condition = x>=this.x-10*r && x<=this.x+10*r && y>=this.y-10*r && y<=this.y+10*r;
             return condition;
         }
     }

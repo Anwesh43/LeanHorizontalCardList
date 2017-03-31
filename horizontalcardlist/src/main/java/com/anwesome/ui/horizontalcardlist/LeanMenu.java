@@ -40,6 +40,7 @@ public class LeanMenu {
         canvas.translate(x+w/2,y+h/2);
         paint.setColor(Color.parseColor("#FAFAFA"));
         canvas.drawRect(new RectF(-w/2,-h/2,w/2,h/2),paint);
+        paint.setColor(Color.parseColor("#282828"));
         paint.setTextSize(h/4);
         canvas.drawText(title,-paint.measureText(title)/2,0,paint);
         canvas.restore();
