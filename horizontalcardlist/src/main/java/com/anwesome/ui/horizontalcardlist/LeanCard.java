@@ -34,17 +34,20 @@ public class LeanCard {
         if(time == 0) {
             w = canvas.getWidth();
             h = canvas.getHeight();
-            bitmap = Bitmap.createScaledBitmap(bitmap,w,h/2,true);
+            bitmap = Bitmap.createScaledBitmap(bitmap,w,2*h/3,true);
             menuButton = new MenuButton();
         }
         paint.setColor(Color.parseColor("#FAFAFA"));
         canvas.drawRect(new RectF(0,0,w,h),paint);
         canvas.drawBitmap(bitmap,0,0,paint);
         paint.setColor(Color.parseColor("#212121"));
-        paint.setTextSize(h/6);
-        canvas.drawText(title,w/10,h/2+h/6,paint);
-        paint.setTextSize(h/10);
+        paint.setTextSize(h/8);
+        canvas.drawText(title,w/10,2*h/3+h/15,paint);
+        paint.setTextSize(h/16);
         canvas.drawText(subtitle,w/10,4*h/5,paint);
+        if(leanMenus.size()>0) {
+            menuButton.draw(canvas,paint);
+        }
         time++;
     }
     public void setMenuDimensions() {
@@ -67,9 +70,9 @@ public class LeanCard {
     private class MenuButton {
         float r,x,y;
         public MenuButton() {
-            r = w/40;
-            x = 3*w/4;
-            y = 3*h/4;
+            r = w/30;
+            x = 4*w/5;
+            y = 4*h/5;
         }
         public void draw(Canvas canvas,Paint paint){
             paint.setColor(Color.parseColor("#212121"));

@@ -33,7 +33,7 @@ public class LeanCardContainer extends ViewGroup{
     public void addLeanCard(LeanCard leanCard) {
         LeanCardView leanCardView = new LeanCardView(getContext());
         leanCardView.setLeanCard(leanCard);
-        addView(leanCardView,new LayoutParams(w/4,w/4));
+        addView(leanCardView,new LayoutParams(w/4,w/4+h/20));
         requestLayout();
     }
     public void initDimensions(Context context) {
@@ -53,11 +53,11 @@ public class LeanCardContainer extends ViewGroup{
                 continue;
             }
             else if(view instanceof LeanCardView) {
-                wSize += view.getMeasuredWidth();
+                wSize += (view.getMeasuredWidth()*12)/10;
                 hSize = Math.max(hSize,view.getMeasuredHeight());
             }
         }
-        setMeasuredDimension(Math.max(w,wSize),hSize);
+        setMeasuredDimension(Math.max(w,wSize),hSize+h/10);
     }
     public void onLayout(boolean reloaded,int a,int b,int w,int h) {
         int x = 0,y=0;
@@ -68,9 +68,9 @@ public class LeanCardContainer extends ViewGroup{
             }
             else if(view instanceof LeanCardView) {
                 int wSize = view.getMeasuredWidth();
-                int hSzie = view.getMeasuredHeight();
-                view.layout(x,y,x+wSize,y+hSzie);
-                x+=wSize;
+                int hSize = view.getMeasuredHeight();
+                view.layout(x,y+h/20,x+wSize,y+hSize+h/10);
+                x+=(wSize*12)/10;
             }
         }
     }
@@ -87,11 +87,13 @@ public class LeanCardContainer extends ViewGroup{
                         }
                         List<LeanMenu> leanMenus = leanCardView.getMenus();
                         if(leanMenus!=null) {
+                            leanMenuView = new LeanMenuView(getContext());
                             leanMenuView.setLeanMenus(leanMenus);
                             int menuHeight = leanMenuView.getMenuHeight();
                             leanMenuView.setX(leanCardView.getX()+leanCardView.getMeasuredWidth()/2);
                             leanMenuView.setY(leanCardView.getY());
                             addView(leanMenuView,new LayoutParams(leanCardView.getMeasuredWidth(),menuHeight));
+                            requestLayout();
                         }
                     }
                 }
