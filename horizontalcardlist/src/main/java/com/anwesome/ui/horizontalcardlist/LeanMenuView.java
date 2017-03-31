@@ -22,6 +22,14 @@ public class LeanMenuView extends View {
     public void setLeanMenus(List<LeanMenu> leanMenus) {
         this.leanMenus = leanMenus;
     }
+    public int getMenuHeight() {
+        int y = 0;
+        for(LeanMenu leanMenu:leanMenus) {
+            PointF dimension = leanMenu.getDimension();
+            y+=dimension.y;
+        }
+        return y;
+    }
     public void onDraw(Canvas canvas) {
         for(LeanMenu leanMenu:leanMenus) {
             leanMenu.draw(canvas,paint);
@@ -39,5 +47,8 @@ public class LeanMenuView extends View {
             }
         }
         return true;
+    }
+    public int hashCode() {
+        return super.hashCode()+leanMenus.hashCode();
     }
 }

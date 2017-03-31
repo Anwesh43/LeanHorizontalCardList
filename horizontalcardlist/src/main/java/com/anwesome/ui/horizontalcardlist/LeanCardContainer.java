@@ -77,7 +77,19 @@ public class LeanCardContainer extends ViewGroup{
                 View view = getChildAt(i);
                 if(view instanceof LeanCardView) {
                     LeanCardView leanCardView = (LeanCardView)view;
-                    if(leanCardView.handleMenuTap(x-leanCardView.getX(),y-leanCardView.getY()));
+                    if(leanCardView.handleMenuTap(x-leanCardView.getX(),y-leanCardView.getY())) {
+                        if(leanMenuView!=null) {
+                            removeView(leanMenuView);
+                        }
+                        List<LeanMenu> leanMenus = leanCardView.getMenus();
+                        if(leanMenus!=null) {
+                            leanMenuView.setLeanMenus(leanMenus);
+                            int menuHeight = leanMenuView.getMenuHeight();
+                            leanMenuView.setX(leanCardView.getX()+leanCardView.getMeasuredWidth()/2);
+                            leanMenuView.setY(leanCardView.getY());
+                            addView(leanMenuView,new LayoutParams(leanCardView.getMeasuredWidth(),menuHeight));
+                        }
+                    }
                 }
             }
         }

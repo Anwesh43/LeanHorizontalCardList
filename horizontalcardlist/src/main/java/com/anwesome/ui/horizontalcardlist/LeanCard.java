@@ -55,6 +55,9 @@ public class LeanCard {
     public boolean handleMenuTap(float x,float y) {
         return menuButton.handleTap(x,y);
     }
+    private List<LeanMenu> getMenus() {
+        return leanMenus;
+    }
     public int hashCode() {
         return bitmap.hashCode()+title.hashCode()+subtitle.hashCode();
     }
