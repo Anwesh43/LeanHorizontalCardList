@@ -13,7 +13,7 @@ public class LeanMenu {
     private String title;
     private OnMenuClickListener onMenuClickListener;
     private float x,y,w,h;
-    private LeanMenu(String title,OnMenuClickListener onMenuClickListener) {
+    public LeanMenu(String title,OnMenuClickListener onMenuClickListener) {
         this.title = title;
         this.onMenuClickListener = onMenuClickListener;
     }

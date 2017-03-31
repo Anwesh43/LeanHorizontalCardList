@@ -27,6 +27,9 @@ public class LeanCard {
         this.title = title;
         this.subtitle = subtitle;
     }
+    public void setLeanMenus(List<LeanMenu> leanMenus) {
+        this.leanMenus = leanMenus;
+    }
     public void draw(Canvas canvas, Paint paint) {
         if(time == 0) {
             w = canvas.getWidth();
