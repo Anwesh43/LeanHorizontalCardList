@@ -9,6 +9,7 @@ import android.util.AttributeSet;
 import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.HorizontalScrollView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -28,10 +29,13 @@ public class LeanCardContainerGroup extends ViewGroup {
     public void addLeanCardContainerSection(LeanCardContainer cardContainer,String title) {
         TextView textView = new TextView(getContext());
         textView.setText(title);
-        textView.setTextSize(h/20);
+        textView.setTextSize(h/100);
         textView.setTextColor(Color.BLACK);
         addView(textView,new LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT));
-        addView(cardContainer,new LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT));
+        HorizontalScrollView horizontalScrollView = new HorizontalScrollView(getContext());
+        horizontalScrollView.addView(cardContainer,new LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT));
+        addView(horizontalScrollView,new LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT));
+        requestLayout();
     }
     public void initDimensions(Context context) {
         DisplayManager displayManager = (DisplayManager) context.getSystemService(Context.DISPLAY_SERVICE);
@@ -46,23 +50,22 @@ public class LeanCardContainerGroup extends ViewGroup {
         for(int i=0;i<getChildCount();i++) {
             View view = getChildAt(i);
             measureChild(view,wSpec,hSpec);
-            hSize+=view.getMeasuredHeight()+h/10;
+            hSize+=view.getMeasuredHeight()+h/40;
         }
         setMeasuredDimension(w,hSize);
     }
     public void onLayout(boolean reloaded,int a,int b,int w,int h) {
-        int x = w/10,y = 0;
+        int x = 0,y = 0;
         for(int i=0;i<getChildCount();i++) {
             View view = getChildAt(i);
             view.layout(x,y,x+view.getMeasuredWidth(),y+view.getMeasuredHeight());
-            y+=view.getMeasuredHeight()+h/10;
+            y+=view.getMeasuredHeight()+h/40;
         }
     }
     public void show() {
         Activity activity = (Activity)getContext();
         ScrollView scrollView = new ScrollView(activity);
-        LeanCardContainerGroup leanCardContainerGroup = new LeanCardContainerGroup(activity);
-        scrollView.addView(leanCardContainerGroup,new LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT));
-        activity.setContentView(scrollView);
+        scrollView.addView(this,new LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT));
+        activity.addContentView(scrollView,new LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT));
     }
 }
