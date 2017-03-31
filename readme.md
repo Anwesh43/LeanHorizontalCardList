@@ -28,5 +28,4 @@
 ```
 
 ### Demo
-
-    <img src="https://github.com/Anwesh43/LeanHorizontalCardList/blob/master/screenshots/leancarddemo.gif" alt="Demo of LeanCardContainer" width="400" height="700"/>
+<img src="https://github.com/Anwesh43/LeanHorizontalCardList/blob/master/screenshots/leancarddemo.gif" alt="Demo of LeanCardContainer" width="400" height="700"/>
