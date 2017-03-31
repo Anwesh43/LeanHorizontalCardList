@@ -27,7 +27,7 @@ public class LeanCardView extends View{
         float x = event.getX(),y = event.getY();
         if(event.getAction() == MotionEvent.ACTION_DOWN) {
             if(leanCard.handleMenuTap(x,y)) {
-                
+
             }
         }
         return true;

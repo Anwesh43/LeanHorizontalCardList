@@ -3,6 +3,7 @@ package com.anwesome.ui.horizontalcardlist;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PointF;
 import android.graphics.RectF;
 
 /**
@@ -27,6 +28,12 @@ public class LeanMenu {
     }
     public int hashCode() {
         return title.hashCode()+(int)(y);
+    }
+    public PointF getDimension() {
+        return new PointF(w,h);
+    }
+    public float getY() {
+        return y;
     }
     public void draw(Canvas canvas, Paint paint) {
         canvas.save();
