@@ -45,7 +45,7 @@ public class LeanCardContainer extends ViewGroup{
         h = size.y;
     }
     public void onMeasure(int wSpec,int hSpec) {
-        int wSize = 0,hSize = 0;
+        int wSize = w/10,hSize = 0;
         for(int i = 0;i<getChildCount();i++) {
             View view = getChildAt(i);
             measureChild(view,wSpec,hSpec);
@@ -60,10 +60,12 @@ public class LeanCardContainer extends ViewGroup{
         setMeasuredDimension(Math.max(w,wSize),hSize+h/10);
     }
     public void onLayout(boolean reloaded,int a,int b,int w,int h) {
-        int x = 0,y=0;
+        int x = w/10,y=0;
         for(int i = 0;i<getChildCount();i++) {
             View view = getChildAt(i);
             if(view instanceof LeanMenuView) {
+                int mx = (int)view.getX(),my = (int)view.getY(),mw = view.getMeasuredWidth(),mh = view.getMeasuredHeight();
+                view.layout(mx,my,mx+mw,my+mh);
                 continue;
             }
             else if(view instanceof LeanCardView) {
@@ -90,8 +92,8 @@ public class LeanCardContainer extends ViewGroup{
                             leanMenuView = new LeanMenuView(getContext());
                             leanMenuView.setLeanMenus(leanMenus);
                             int menuHeight = leanMenuView.getMenuHeight();
-                            leanMenuView.setX(leanCardView.getX()+leanCardView.getMeasuredWidth()/2);
-                            leanMenuView.setY(leanCardView.getY());
+                            leanMenuView.setX(x);
+                            leanMenuView.setY(y);
                             addView(leanMenuView,new LayoutParams(leanCardView.getMeasuredWidth(),menuHeight));
                             requestLayout();
                         }

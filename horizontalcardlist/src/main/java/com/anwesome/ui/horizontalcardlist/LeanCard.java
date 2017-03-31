@@ -36,6 +36,7 @@ public class LeanCard {
             h = canvas.getHeight();
             bitmap = Bitmap.createScaledBitmap(bitmap,w,2*h/3,true);
             menuButton = new MenuButton();
+            setMenuDimensions();
         }
         paint.setColor(Color.parseColor("#FAFAFA"));
         canvas.drawRect(new RectF(0,0,w,h),paint);
@@ -70,21 +71,21 @@ public class LeanCard {
     private class MenuButton {
         float r,x,y;
         public MenuButton() {
-            r = w/30;
-            x = 4*w/5;
-            y = 4*h/5;
+            r = w/35;
+            x = 4*w/5+w/20;
+            y = 4*h/5+h/20;
         }
         public void draw(Canvas canvas,Paint paint){
-            paint.setColor(Color.parseColor("#212121"));
+            paint.setColor(Color.parseColor("#757575"));
             for(int i=0;i<3;i++) {
                 canvas.save();
                 canvas.translate(x,y);
-                canvas.drawCircle(0,(i-1)*2*r,r,paint);
+                canvas.drawCircle(0,(i-1)*(5/2*r),r,paint);
                 canvas.restore();
             }
         }
         public boolean handleTap(float x,float y) {
-            boolean condition = x>=this.x-r && x<=this.x+r && y>=this.y-3*r && y<=this.y+3*r;
+            boolean condition = x>=this.x-2*r && x<=this.x+2*r && y>=this.y-4*r && y<=this.y+4*r;
             return condition;
         }
     }
