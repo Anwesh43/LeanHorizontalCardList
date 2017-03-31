@@ -23,13 +23,7 @@ public class LeanCardView extends View{
             leanCard.draw(canvas,paint);
         }
     }
-    public boolean onTouchEvent(MotionEvent event) {
-        float x = event.getX(),y = event.getY();
-        if(event.getAction() == MotionEvent.ACTION_DOWN) {
-            if(leanCard.handleMenuTap(x,y)) {
-
-            }
-        }
-        return true;
+    public boolean handleMenuTap(float x,float y) {
+        return leanCard.handleMenuTap(x,y);
     }
 }
