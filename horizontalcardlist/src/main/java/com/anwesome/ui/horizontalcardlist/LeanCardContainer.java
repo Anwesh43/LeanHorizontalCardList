@@ -18,7 +18,7 @@ import java.util.List;
  * Created by anweshmishra on 31/03/17.
  */
 public class LeanCardContainer extends ViewGroup{
-    private int w,h;
+    private int w,h,origW;
     private List<LeanCard> leanCards = new ArrayList<>();
     private LeanMenuView leanMenuView;
     private boolean calledExplicitly = false;
@@ -57,11 +57,11 @@ public class LeanCardContainer extends ViewGroup{
                 hSize = Math.max(hSize,view.getMeasuredHeight());
             }
         }
-        wSize+=w/20;
-        setMeasuredDimension(Math.max(w,wSize),hSize+h/10);
+        origW = wSize;
+        setMeasuredDimension(Math.max(w,wSize),hSize+h/20);
     }
     public void onLayout(boolean reloaded,int a,int b,int w,int h) {
-        int x = w/20,y=0;
+        int x = w/80,y=0;
         for(int i = 0;i<getChildCount();i++) {
             View view = getChildAt(i);
             if(view instanceof LeanMenuView) {
@@ -95,10 +95,10 @@ public class LeanCardContainer extends ViewGroup{
                             int menuHeight = leanMenuView.getMenuHeight();
                             leanMenuView.setElevation(10);
                             leanMenuView.setX(leanCardView.getX()+leanCardView.getMeasuredWidth()*0.8f);
-                            if(leanMenuView.getX()+leanMenuView.getMeasuredWidth()> w) {
+                            if(leanMenuView.getX()+leanMenuView.getMeasuredWidth()> origW-w/5) {
                                 leanMenuView.setX(leanCardView.getX());
                             }
-                            leanMenuView.setY(leanCardView.getY()+leanCardView.getMeasuredHeight()*0.8f);
+                            leanMenuView.setY(leanCardView.getY()+leanCardView.getMeasuredHeight()*0.5f);
                             addView(leanMenuView,new LayoutParams(leanCardView.getMeasuredWidth(),menuHeight));
                             requestLayout();
                         }
