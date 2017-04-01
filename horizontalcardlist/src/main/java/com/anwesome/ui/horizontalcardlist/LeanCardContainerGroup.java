@@ -52,19 +52,26 @@ public class LeanCardContainerGroup extends ViewGroup {
             measureChild(view,wSpec,hSpec);
             hSize+=view.getMeasuredHeight()+h/40;
         }
+        hSize+=h/5;
         setMeasuredDimension(w,hSize);
     }
     public void onLayout(boolean reloaded,int a,int b,int w,int h) {
         int x = 0,y = 0;
         for(int i=0;i<getChildCount();i++) {
             View view = getChildAt(i);
-            view.layout(x,y,x+view.getMeasuredWidth(),y+view.getMeasuredHeight());
+            if(view instanceof  TextView) {
+                view.layout(x+w/20,y,x+w/20+view.getMeasuredWidth(),y+view.getMeasuredHeight());
+            }
+            else {
+                view.layout(x, y, x + view.getMeasuredWidth(), y + view.getMeasuredHeight());
+            }
             y+=view.getMeasuredHeight()+h/40;
         }
     }
     public void show() {
         Activity activity = (Activity)getContext();
         ScrollView scrollView = new ScrollView(activity);
+        this.setBackgroundColor(Color.parseColor("#ECEFF1"));
         scrollView.addView(this,new LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT));
         activity.addContentView(scrollView,new LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT));
     }
