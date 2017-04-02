@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.anwesome.ui.horizontalcardlist.LeanCard;
 import com.anwesome.ui.horizontalcardlist.LeanCardContainer;
@@ -18,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
     private int drawables[] = {R.drawable.gojira,R.drawable.kol,R.drawable.penguin,R.drawable.profile_img};
     private String titles[] = {"Gojira","Kings of Leno","Penguin","ProfileImg"};
     private String subtitles[] = {"music band","music band","bird","person"};
-    private String menus[] ={"add","delete"};
+    private String menus[] ={"add","delete","track","download","order","share","save"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,7 +37,13 @@ public class MainActivity extends AppCompatActivity {
                 LeanCard leanCard = new LeanCard(bitmaps[i % e], titles[i % e], subtitles[i % e]);
                 List<LeanMenu> leanMenus = new ArrayList<>();
                 for (int j = 0; j < menus.length; j++) {
-                    LeanMenu leanMenu = new LeanMenu(menus[j], null);
+                    final String menuText = menus[j];
+                    LeanMenu leanMenu = new LeanMenu(menus[j], new LeanMenu.OnMenuClickListener() {
+                        @Override
+                        public void onClick() {
+                            Toast.makeText(MainActivity.this, menuText, Toast.LENGTH_SHORT).show();
+                        }
+                    });
                     leanMenus.add(leanMenu);
                 }
                 leanCard.setLeanMenus(leanMenus);
