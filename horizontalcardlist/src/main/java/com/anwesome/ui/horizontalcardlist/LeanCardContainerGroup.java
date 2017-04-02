@@ -7,7 +7,6 @@ import android.graphics.Point;
 import android.hardware.display.DisplayManager;
 import android.util.AttributeSet;
 import android.view.Display;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
