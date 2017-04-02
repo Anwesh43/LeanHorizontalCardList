@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
             LeanCardContainer leanCardContainer = new LeanCardContainer(this);
             for (int i = 0; i < drawables.length * 4; i++) {
                 int e = drawables.length;
+                final String title = titles[i%e];
                 LeanCard leanCard = new LeanCard(bitmaps[i % e], titles[i % e], subtitles[i % e]);
                 List<LeanMenu> leanMenus = new ArrayList<>();
                 for (int j = 0; j < menus.length; j++) {
@@ -47,7 +49,11 @@ public class MainActivity extends AppCompatActivity {
                     leanMenus.add(leanMenu);
                 }
                 leanCard.setLeanMenus(leanMenus);
-                leanCardContainer.addLeanCard(leanCard);
+                leanCardContainer.addLeanCard(leanCard,new View.OnClickListener(){
+                    public void onClick(View view) {
+                        Toast.makeText(MainActivity.this, title, Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
             leanCardContainerGroup.addLeanCardContainerSection(leanCardContainer, "Section "+(k+1));
         }
