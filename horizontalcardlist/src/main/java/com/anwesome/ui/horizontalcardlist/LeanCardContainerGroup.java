@@ -7,6 +7,7 @@ import android.graphics.Point;
 import android.hardware.display.DisplayManager;
 import android.util.AttributeSet;
 import android.view.Display;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
@@ -18,15 +19,19 @@ import android.widget.TextView;
  */
 public class LeanCardContainerGroup extends ViewGroup {
     private int w,h;
+    private LeanMenuController leanMenuController;
     public LeanCardContainerGroup(Context context) {
         super(context);
+        leanMenuController = LeanMenuController.getInstance(this);
         initDimensions(context);
     }
     public LeanCardContainerGroup(Context context, AttributeSet attrs) {
         super(context,attrs);
+        leanMenuController = LeanMenuController.getInstance(this);
         initDimensions(context);
     }
     public void addLeanCardContainerSection(LeanCardContainer cardContainer,String title) {
+        cardContainer.setLeanMenuController(leanMenuController);
         TextView textView = new TextView(getContext());
         textView.setText(title);
         textView.setTextSize(h/100);
@@ -34,6 +39,7 @@ public class LeanCardContainerGroup extends ViewGroup {
         addView(textView,new LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT));
         HorizontalScrollView horizontalScrollView = new HorizontalScrollView(getContext());
         horizontalScrollView.addView(cardContainer,new LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT));
+        cardContainer.setParentHorizontalScrollView(horizontalScrollView);
         addView(horizontalScrollView,new LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT));
         requestLayout();
     }
@@ -62,9 +68,13 @@ public class LeanCardContainerGroup extends ViewGroup {
             if(view instanceof  TextView) {
                 view.layout(x+w/20,y,x+w/20+view.getMeasuredWidth(),y+view.getMeasuredHeight());
             }
-            else {
+            else if(view instanceof LeanMenuView) {
+                view.layout(view.getLeft(),view.getTop(),view.getLeft()+view.getMeasuredWidth(),view.getTop()+view.getMeasuredHeight());
+            }
+            else{
                 view.layout(x, y, x + view.getMeasuredWidth(), y + view.getMeasuredHeight());
             }
+
             y+=view.getMeasuredHeight()+h/40;
         }
     }

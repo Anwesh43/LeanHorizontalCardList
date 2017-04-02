@@ -5,10 +5,7 @@ import android.content.Context;
 import android.graphics.Point;
 import android.hardware.display.DisplayManager;
 import android.util.AttributeSet;
-import android.view.Display;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.HorizontalScrollView;
 
 import java.util.ArrayList;
@@ -20,12 +17,19 @@ import java.util.List;
 public class LeanCardContainer extends ViewGroup{
     private int w,h,origW;
     private List<LeanCard> leanCards = new ArrayList<>();
-    private LeanMenuView leanMenuView;
     private boolean calledExplicitly = false;
+    private HorizontalScrollView horizontalScrollView;
+    private LeanMenuController leanMenuController;
     public LeanCardContainer(Context context) {
         super(context);
         initDimensions(context);
         calledExplicitly = true;
+    }
+    public void setParentHorizontalScrollView(HorizontalScrollView horizontalScrollView) {
+        this.horizontalScrollView = horizontalScrollView;
+    }
+    public void setLeanMenuController(LeanMenuController leanMenuController) {
+        this.leanMenuController = leanMenuController;
     }
     public LeanCardContainer(Context context, AttributeSet attrs) {
         super(context,attrs);
@@ -78,35 +82,40 @@ public class LeanCardContainer extends ViewGroup{
         }
     }
     public boolean onTouchEvent(MotionEvent event) {
-        float x = event.getX(),y = event.getY();
         if(event.getAction() == MotionEvent.ACTION_DOWN) {
-            for(int i=0;i<getChildCount();i++) {
+            float x = event.getX(),y = event.getY();
+            for (int i = 0; i < getChildCount(); i++) {
                 View view = getChildAt(i);
-                if(view instanceof LeanCardView) {
-                    LeanCardView leanCardView = (LeanCardView)view;
-                    if(leanCardView.handleMenuTap(x-leanCardView.getX(),y-leanCardView.getY())) {
-                        if(leanMenuView!=null) {
-                            removeView(leanMenuView);
-                        }
-                        List<LeanMenu> leanMenus = leanCardView.getMenus();
-                        if(leanMenus!=null) {
-                            leanMenuView = new LeanMenuView(getContext());
-                            leanMenuView.setLeanMenus(leanMenus);
-                            int menuHeight = leanMenuView.getMenuHeight();
-                            leanMenuView.setElevation(10);
-                            leanMenuView.setX(leanCardView.getX()+leanCardView.getMeasuredWidth()*0.8f);
-                            if(leanMenuView.getX()+leanMenuView.getMeasuredWidth()> origW-w/5) {
-                                leanMenuView.setX(leanCardView.getX());
-                            }
-                            leanMenuView.setY(leanCardView.getY()+leanCardView.getMeasuredHeight()*0.5f);
-                            addView(leanMenuView,new LayoutParams(leanCardView.getMeasuredWidth(),menuHeight));
-                            requestLayout();
-                        }
-                    }
-                }
+                handleTapForView( view, x, y);
             }
         }
         return true;
+    }
+    private void handleTapForView(View view,float x,float y) {
+        if(view instanceof LeanCardView && leanMenuController!=null && horizontalScrollView!=null) {
+            LeanCardView leanCardView = (LeanCardView)view;
+            if(leanCardView.handleMenuTap(x-leanCardView.getX(),y-leanCardView.getY())) {
+                List<LeanMenu> leanMenus = leanCardView.getMenus();
+                if(leanMenus!=null) {
+                    float xMenu = leanCardView.getX()+leanCardView.getMeasuredWidth()*0.4f-horizontalScrollView.getScrollX();
+                    if(xMenu > w*0.8f) {
+                        xMenu = (leanCardView.getX())-horizontalScrollView.getScrollX();
+                    }
+                    float yMenu = (leanCardView.getY()+leanCardView.getMeasuredHeight()*0.2f);
+                    int wMenu = leanCardView.getMeasuredWidth();
+                    leanMenuController.show(leanMenus,horizontalScrollView.getX()+xMenu,horizontalScrollView.getY()+yMenu,wMenu);
+                }
+            }
+            horizontalScrollView.setOnTouchListener(new OnTouchListener() {
+                @Override
+                public boolean onTouch(View view, MotionEvent motionEvent) {
+                    if(motionEvent.getAction() == MotionEvent.ACTION_MOVE) {
+                        leanMenuController.hide();
+                    }
+                    return false;
+                }
+            });
+        }
     }
     public void show() {
         if(calledExplicitly) {
