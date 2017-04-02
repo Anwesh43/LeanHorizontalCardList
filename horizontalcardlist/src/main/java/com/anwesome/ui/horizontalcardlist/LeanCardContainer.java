@@ -34,9 +34,10 @@ public class LeanCardContainer extends ViewGroup{
     public LeanCardContainer(Context context, AttributeSet attrs) {
         super(context,attrs);
     }
-    public void addLeanCard(LeanCard leanCard) {
+    public void addLeanCard(LeanCard leanCard,OnClickListener onClickListener) {
         LeanCardView leanCardView = new LeanCardView(getContext());
         leanCardView.setLeanCard(leanCard);
+        leanCardView.setOnClickListener(onClickListener);
         addView(leanCardView,new LayoutParams(w/4,w/4+h/20));
         requestLayout();
     }
@@ -94,7 +95,9 @@ public class LeanCardContainer extends ViewGroup{
     private void handleTapForView(View view,float x,float y) {
         if(view instanceof LeanCardView && leanMenuController!=null && horizontalScrollView!=null) {
             LeanCardView leanCardView = (LeanCardView)view;
-            if(leanCardView.handleMenuTap(x-leanCardView.getX(),y-leanCardView.getY())) {
+            x-=leanCardView.getX();
+            y-=leanCardView.getY();
+            if(leanCardView.handleMenuTap(x,y)) {
                 List<LeanMenu> leanMenus = leanCardView.getMenus();
                 if(leanMenus!=null) {
                     float xMenu = leanCardView.getX()+leanCardView.getMeasuredWidth()*0.4f-horizontalScrollView.getScrollX();
@@ -105,6 +108,9 @@ public class LeanCardContainer extends ViewGroup{
                     int wMenu = leanCardView.getMeasuredWidth();
                     leanMenuController.show(leanMenus,horizontalScrollView.getX()+xMenu,horizontalScrollView.getY()+yMenu,wMenu);
                 }
+            }
+            else if(leanCardView.handleCardTap(x,y)) {
+                //TO IMPLEMENT
             }
             horizontalScrollView.setOnTouchListener(new OnTouchListener() {
                 @Override

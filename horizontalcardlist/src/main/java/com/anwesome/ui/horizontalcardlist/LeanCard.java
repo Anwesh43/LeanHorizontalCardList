@@ -70,6 +70,10 @@ public class LeanCard {
         }
         menuH = y;
     }
+    public boolean handleCardTap(float x,float y) {
+        boolean condition =  x>=0 && x<=bitmap.getWidth() && y>=0 && y<=bitmap.getHeight();
+        return condition;
+    }
     public boolean handleMenuTap(float x,float y) {
         return menuButton.handleTap(x,y);
     }
